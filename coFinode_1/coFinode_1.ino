@@ -12,13 +12,23 @@ int BrewLightPin = D0;
 int BrewButPin = D2;
 //Using GPIO5 (D1) for Brewing Light Input
 //Using GPIO6 (D2) for Brewing Button Output
-/*
+
 String page  = "";
 String prepareHtmlPage(){
   String htmlPage = 
-    String()
-  }
-*/
+    String("HTTP/1.1 200 OK\r\n") +
+    "Content-Type: text/html\r\n" +
+    "Connection: close\r\n" +//connection closed after response
+    "Refresh: 5\r\n" +//refresh the page automatically every 5 sec
+    "\r\n" +
+    "<!DOCTYPE HTML>" +
+    "<html>" +
+    "Analog input:  " + //String(analogRead(A0)) +
+    "</html>" +
+    "\r\n";
+    return htmlPage;
+}
+
 void setup() {
   // put your setup code here, to run once:
   //Basic HTML webpage

@@ -43,3 +43,11 @@ Output:
   * On/Off Switch
 
 Digital .write command and the corresponding pin number
+
+Completed the brewing button output (paralleling the structure for LEDON and LEDOFF)
+Can do similar structuring for any output (left and right, and on/off)
+
+Will need to learn structure for brewing light.
+in main loop, throw in a check for if the brewing light digital pin is high.
+if brew light is on, water is ready to brew (is boiled). It means you can go through with brewing.
+So we will need to do a check for if brew light is true, and brew button will have to give user feedback on brew light being off, until it is on.

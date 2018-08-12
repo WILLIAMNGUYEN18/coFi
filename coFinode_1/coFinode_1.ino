@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <FS.h>   // Include the SPIFFS library
+//#include <FS.h>   // Include the SPIFFS library
 
 // Replace with your network credentials
 const char* ssid = "Myhouse";
@@ -28,7 +28,7 @@ int OnOffPin = D9;
 // this pin has RXD0
 
 String page  = "";
-
+/*
 //https://forum.arduino.cc/index.php?topic=499399.0
 //https://www.arduino.cc/en/Reference/FileRead
 //https://forum.arduino.cc/index.php?topic=141418.0
@@ -60,14 +60,15 @@ String readFile(String path){
     }  
   }
 }
-
+*/
 void setup() {
   // put your setup code here, to run once:
   //Basic HTML webpage
+  
   page = "<h1>Simple NodeMCU Web Server</h1><p> <a href= \"BrewButton\"><button>Brewing Button</button></a>&nbsp; <a href=\"LeftButton\"><button>Left</button></a> <a href=\"RightButton\"><button>Right</button></a> <a href=\"OnOff\"><button>Power Switch (On/Off)</button></a></p>";
 
   //starting SPI Flash Files System
-   SPIFFS.begin();
+  //SPIFFS.begin();
    /* sample SPIFF code
    String getContentType(String filename) { // convert the file extension to the MIME type
   if (filename.endsWith(".html")) return "text/html";
@@ -127,11 +128,16 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
+
+  
+  Serial.println("Default URI Creation");
   //If server is asking for default uri, send page
   server.on("/", [](){
     server.send(200, "text/html", page);
   });
 
+  
+  Serial.println("Brew switch URI Creation");
   //When the client requests the brew button uri through pressing the Brew Button on the webpage,
   //We simulate a brew button press on the keurig through digitally writing the pin to high and then
   //low with a short delay.
@@ -142,8 +148,9 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     digitalWrite(BrewButPin, LOW);
   });
 
-//UNIMPLEMENTED
 
+
+  Serial.println("Left switch URI Creation");
   //When the client requests the left button uri through pressing the left button on the webpage,
   //we simulate the left button press through writing the pin to high, and then low.
   server.on("/LeftButton", [](){
@@ -154,7 +161,8 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   });
   //When the client requests the right button uri through pressing the right button on the webpage,
   //we simulate the right button press through writing the pin to high, and then low.
-  
+
+  Serial.println("Right switch URI Creation");
   server.on("/RightButton", [](){
     server.send(200, "text/html", page);
     digitalWrite(BrewRightPin, HIGH);
@@ -162,6 +170,8 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     digitalWrite(BrewRightPin, LOW);
   });
 
+
+  Serial.println("On/Off switch URI Creation");
   //client requests on/off uri through pressing power button, leading to us
   //simulating button press through digital signal writing.
   server.on("/OnOff", [](){
@@ -170,6 +180,8 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     delay(1000);
     digitalWrite(OnOffPin, LOW);
   });
+  server.begin();
+  Serial.println("Web server started!");
 
 }
 
@@ -177,7 +189,7 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   //implement an if to check if the brewing light is on (high?) and set a boolean if it is.
   //use this boolean to confirm or deny the brew button interaction.
 
-void loop() {
+void loop(void) {
   // put your main code here, to run repeatedly:
     server.handleClient ();
 }

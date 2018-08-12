@@ -47,3 +47,10 @@ So we will need to do a check for if brew light is true, and brew button will ha
 Keurig changed to smaller model
 * has built in cup detector
 * will need to add another if statement regarding if cup is present (along with if the water is finished heating up)
+
+
+8/11/18
+Using external HTML file rather than string
+* Will is working on successfully reading an additional html file into a string to be used rather than page
+* Even is working on creating an HTML file suitable to our needs
+* Zach is working on decomposing the newer (smaller) keurig for use

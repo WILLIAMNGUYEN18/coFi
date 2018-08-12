@@ -52,5 +52,13 @@ Keurig changed to smaller model
 8/11/18
 Using external HTML file rather than string
 * Will is working on successfully reading an additional html file into a string to be used rather than page
+  * Will figured out the issues with the original code and successfully uploaded it.
+  * Starting to load the html onto the SPIFFS
+  * Need to read the html from SPIFFS
 * Even is working on creating an HTML file suitable to our needs
+  * Added CSS changes for UI (Attempting to effectively accommodate for mobile usage as well)
 * Zach is working on decomposing the newer (smaller) keurig for use
+  * Zach is testing the signals on the smaller Keurig
+  * Zach noticed the light that detects when the Keurig slot has a cup inside (cup detector) is flashing
+    * this could lead to failing to sample (sampling the cup detector when it's off)
+    * Contemplating converting the cup detector to a solid signal OR increasing the sample rate to successfully detect the flashing high signal.

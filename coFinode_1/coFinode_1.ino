@@ -162,7 +162,7 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   digitalWrite(BrewButPin, LOW);
 
   //Make sure directionals and power switch are low (inactive) until they are used
-  digitalWrite(OnOffPin, LOW);
+  digitalWrite(OnOffPin, HIGH);
 
 
   
@@ -208,9 +208,9 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   //simulating button press through digital signal writing.
   server.on("/OnOff", [](){
     server.send(200, "text/html", page);
-    digitalWrite(OnOffPin, HIGH);
-    delay(1000);
     digitalWrite(OnOffPin, LOW);
+    delay(1000);
+    digitalWrite(OnOffPin, HIGH);
   });
   server.begin();
   Serial.println("Web server started!");

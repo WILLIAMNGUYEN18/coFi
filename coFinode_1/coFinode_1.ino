@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-//#include <FS.h>   // Include the SPIFFS library
+#include <FS.h>   // Include the SPIFFS library
 
 // Replace with your network credentials
 const char* ssid = "Myhouse";
@@ -28,6 +28,7 @@ int OnOffPin = D9;
 // this pin has RXD0
 
 String page  = "";
+
 /*
 //https://forum.arduino.cc/index.php?topic=499399.0
 //https://www.arduino.cc/en/Reference/FileRead
@@ -48,27 +49,92 @@ String prepareHtmlPage(){
     "\r\n";
     return htmlPage;
 }
+*/
 
-String readFile(String path){
-  String uiresult = "";
-  Serial.print("Reading HTML File");  
-  if (SPIFFS.exists(path)){
-    File ui = SPIFFS.open(path, "r");
-    while(ui.available()){
-      uiresult += ui.read();
-      Serial.print(uiresult);
-    }  
+
+/*
+SPIFFS.begin();
+
+  if (!SPIFFS.exists("/formatComplete.txt")) {
+    Serial.println("Please wait 30 secs for SPIFFS to be formatted");
+    SPIFFS.format();
+    Serial.println("Spiffs formatted");
+    
+    File f = SPIFFS.open("/formatComplete.txt", "w");
+    if (!f) {
+        Serial.println("file open failed");
+    } else {
+        f.println("Format Complete");
+    }
+  } else {
+    Serial.println("SPIFFS is formatted. Moving along...");
   }
-}
+
+  if (SPIFFS.exists("/debugLog.txt")){
+
+      File f = SPIFFS.open("/debugLog.txt", "r");
+      if (f && f.size()) {
+          Serial.println("Dumping log file");
+                
+          String debugURL = debugLogURL += MAC;
+          String debugLogData;
+      
+          while (f.available()){
+            debugLogData += char(f.read());
+          }
+          f.close();
+               
+          Serial.println("=====================================");
+          Serial.println(debugLogData);
+          Serial.println("=====================================");
+    
+          http.begin(debugURL, fingerprint);
+          http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+          int httpCode = http.POST("logData=" + debugLogData);
+    //    String response = http.getString();
+    //    response.trim();
+          Serial.print("Return code = ");  Serial.println(httpCode);
+          http.writeToStream(&Serial);
+          http.end();
+
+          if (httpCode == 200){
+              //Transmitted successfully.  New log.
+            Serial.println("Log transmitted successfully.  Truncating...");
+            debugLog = SPIFFS.open("/debugLog.txt", "w");
+            if (!debugLog) {
+                Serial.println("Opening file for write failed");
+            }
+            debugLog.close();
+          } else {
+              //Error of some kind - keep the log and append.
+              Serial.println("Submission unsuccessful - appending to existing log...");
+
+          }         
+      } else {
+          Serial.println("Debug log is empty");
+      }
+      
+  }
+  SPIFFS.end();
 */
 void setup() {
   // put your setup code here, to run once:
   //Basic HTML webpage
-  
-  page = "<h1>Simple NodeMCU Web Server</h1><p> <a href= \"BrewButton\"><button>Brewing Button</button></a>&nbsp; <a href=\"LeftButton\"><button>Left</button></a> <a href=\"RightButton\"><button>Right</button></a> <a href=\"OnOff\"><button>Power Switch (On/Off)</button></a></p>";
+
+  page = "";
 
   //starting SPI Flash Files System
-  //SPIFFS.begin();
+  SPIFFS.begin();
+    String uiresult = "";
+  Serial.print("Reading HTML File");  
+  if (SPIFFS.exists("/index.txt")){
+    File ui = SPIFFS.open("/index.txt", "r");
+    while(ui.available()){
+      uiresult += char(ui.read());
+      Serial.print(uiresult);
+    }  
+  }
+  page = uiresult;
    /* sample SPIFF code
    String getContentType(String filename) { // convert the file extension to the MIME type
   if (filename.endsWith(".html")) return "text/html";

@@ -12,20 +12,15 @@ ESP8266WebServer server(80);   //instantiate server at port 80 (http port)
 //IMPLEMENTED
 int BrewLightPin = D0;
 int BrewButPin = D2;
+
+int OnOffPin = D1;
+//GPIO3 (D9)for On/Off switch for keurig
+// this pin has RXD0
 //Using GPIO16 (D0) for Brewing Light Input
 //Using GPIO6 (D2) for Brewing Button Output
 
-//UNIMPLEMENTED
-int BrewLeftPin = D1;
-//GPIO GPIO5 (D1) for Brewing Size Left Directional Button
 
-int BrewRightPin =  D10;
-//GPIO1 (D10) for Brewing Size Right Directional Button
-// this pin has TXD0
 
-int OnOffPin = D9;
-//GPIO3 (D9)for On/Off switch for keurig
-// this pin has RXD0
 
 String page  = "";
 
@@ -120,9 +115,6 @@ SPIFFS.begin();
 void setup() {
   // put your setup code here, to run once:
   //Basic HTML webpage
-
-  page = "";
-
   //starting SPI Flash Files System
   SPIFFS.begin();
     String uiresult = "";
@@ -163,8 +155,6 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   pinMode(BrewLightPin, INPUT_PULLDOWN_16);
   pinMode(BrewButPin, OUTPUT);
 
-  pinMode(BrewLeftPin, OUTPUT);
-  pinMode(BrewRightPin, OUTPUT);
   pinMode(OnOffPin, OUTPUT);
   
 
@@ -172,8 +162,6 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   digitalWrite(BrewButPin, LOW);
 
   //Make sure directionals and power switch are low (inactive) until they are used
-  digitalWrite(BrewLeftPin, LOW);
-  digitalWrite(BrewRightPin, LOW);
   digitalWrite(OnOffPin, LOW);
 
 
@@ -200,6 +188,7 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   //If server is asking for default uri, send page
   server.on("/", [](){
     server.send(200, "text/html", page);
+    Serial.println(" default webpage on");
   });
 
   
@@ -213,29 +202,6 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     delay(1000);
     digitalWrite(BrewButPin, LOW);
   });
-
-
-
-  Serial.println("Left switch URI Creation");
-  //When the client requests the left button uri through pressing the left button on the webpage,
-  //we simulate the left button press through writing the pin to high, and then low.
-  server.on("/LeftButton", [](){
-    server.send(200, "text/html", page);
-    digitalWrite(BrewLeftPin, HIGH);
-    delay(1000);
-    digitalWrite(BrewLeftPin, LOW);
-  });
-  //When the client requests the right button uri through pressing the right button on the webpage,
-  //we simulate the right button press through writing the pin to high, and then low.
-
-  Serial.println("Right switch URI Creation");
-  server.on("/RightButton", [](){
-    server.send(200, "text/html", page);
-    digitalWrite(BrewRightPin, HIGH);
-    delay(1000);
-    digitalWrite(BrewRightPin, LOW);
-  });
-
 
   Serial.println("On/Off switch URI Creation");
   //client requests on/off uri through pressing power button, leading to us

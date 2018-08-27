@@ -74,15 +74,17 @@
     </h1>
 
     <div>
-        <a class="controls" href=\ "OnOff\">
+        <p>
+        <a class="controls" href=\OnOff>
             <button>Power (On/Off)</button>
         </a>
         <a class="controls">
             <button>Alarm</button>
         </a>
-        <a class="controls" href=\ "BrewButton\">
+        <a class="controls" href=\BrewButton>
             <button>Brew Coffee</button>
         </a>
+        </p>
     </div>
 
     <a class="description" href="https://github.com/WILLIAMNGUYEN18/coFi">check us out on github</a>

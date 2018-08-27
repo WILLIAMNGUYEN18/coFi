@@ -36,9 +36,11 @@ void setup(void){
 
   server.on("/", [](){
     server.send(200, "text/html", page);
+    Serial.println(" default webpage on")
   });
   server.on("/LEDOn", [](){
     server.send(200, "text/html", page);
+    Serial.println("LED On Pressed")
     digitalWrite(LEDPin, HIGH);
     delay(1000);
   });

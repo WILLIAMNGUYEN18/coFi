@@ -1,0 +1,6 @@
+Open a sketch
+Go to sketch directory
+Create a directory name data and any files you want in the file
+Make sure you have selected a board, port and closed serial monitor
+Select Tools > ESP8266 Sketcha Data Upload menu item. Start Uploading files into SPIFFS
+When done, IDE status bar will display image uplaoded message.

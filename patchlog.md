@@ -62,3 +62,13 @@ Using external HTML file rather than string
   * Zach noticed the light that detects when the Keurig slot has a cup inside (cup detector) is flashing
     * this could lead to failing to sample (sampling the cup detector when it's off)
     * Contemplating converting the cup detector to a solid signal OR increasing the sample rate to successfully detect the flashing high signal.
+
+8/27/18
+Website showing on read index.txt (uploaded to SPIFFs). Corresponding pins found for button presses
+
+* Even starting to create a separate css page
+  * exploring javascript alarms
+* Zach has reassembled the keurig with wires (that will attach to NodeMCU and relay sensor data) neatly siphoned out of the keurig.
+  * Now identifying different wires and pins
+* Will has successfully uploaded html to SPIFFs and reads it to a string for website usage.
+  * Resolved some errors regarding format of html

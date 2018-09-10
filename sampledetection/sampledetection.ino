@@ -74,7 +74,7 @@ void readStatus() {
     // if the state has changed, increment the counter
     if (flashState == HIGH) {
       // if the current state is HIGH then the button
-      // wend from off to on:
+      // went from off to on:
       flashCounter++;
       Serial.println("on");
       Serial.print("Flashes: ");

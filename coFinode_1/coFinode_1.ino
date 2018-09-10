@@ -231,13 +231,18 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   server.on("/OnOff", [](){
     server.send(200, "text/html", page);
     digitalWrite(OnOffPin, LOW);
-    delay(5000);
+    delay(3000);
     digitalWrite(OnOffPin, HIGH);
     
-    delay(5000);
-
+    delay(3000);
     digitalWrite(BrewLidPin, LOW);
-    delay(5000);
+    delay(3000);
+    digitalWrite(BrewLidPin, HIGH);
+
+    
+    delay(3000);
+    digitalWrite(BrewLidPin, LOW);
+    delay(3000);
     digitalWrite(BrewLidPin, HIGH);
   });
   server.begin();

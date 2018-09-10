@@ -72,3 +72,13 @@ Website showing on read index.txt (uploaded to SPIFFs). Corresponding pins found
   * Now identifying different wires and pins
 * Will has successfully uploaded html to SPIFFs and reads it to a string for website usage.
   * Resolved some errors regarding format of html
+
+9/9/18
+* Will
+  * Adjust to have the exact buttons we want ()
+  * Create checks to ensure that: there is cup (blinking light detection)
+* Zach
+  * has effectively labeled and setup the hardware. 
+  * He can connect the keurig to the NodeMCU at any point
+* Even
+  * Setting up alarm clock/timer to be used for brewing

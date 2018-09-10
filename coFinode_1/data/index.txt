@@ -5,6 +5,8 @@
 <html>
 
 <head>
+
+<meta charset="utf-8"/>
     <title>coFi: Internet of Things Keurig</title>
 
     <style type="text/css">

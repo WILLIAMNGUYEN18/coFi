@@ -173,8 +173,8 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   pinMode(OnOffPin, OUTPUT);
 
   
-  //set coffee brewing to low so it's not brewing yet
-  digitalWrite(BrewButPin, LOW);
+  //set coffee brewing to high so it's not brewing yet
+  digitalWrite(BrewButPin, HIGH);
 
   //Make sure directionals and power switch are low (inactive) until they are used
   digitalWrite(OnOffPin, HIGH);
@@ -214,9 +214,9 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   server.on("/BrewButton", [](){
     if(notifySend == 1){
       server.send(200, "text/html", page);
-      digitalWrite(BrewButPin, HIGH);
-      delay(1000);
       digitalWrite(BrewButPin, LOW);
+      delay(1000);
+      digitalWrite(BrewButPin, HIGH);
       notifySend = 0;
     }
     else{
@@ -231,13 +231,13 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   server.on("/OnOff", [](){
     server.send(200, "text/html", page);
     digitalWrite(OnOffPin, LOW);
-    delay(1000);
+    delay(5000);
     digitalWrite(OnOffPin, HIGH);
     
-    delay(1000);
+    delay(5000);
 
     digitalWrite(BrewLidPin, LOW);
-    delay(1000);
+    delay(5000);
     digitalWrite(BrewLidPin, HIGH);
   });
   server.begin();

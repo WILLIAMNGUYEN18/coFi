@@ -9,15 +9,29 @@ const char* password = "redlotus1313";
 
 ESP8266WebServer server(80);   //instantiate server at port 80 (http port)
 
-//IMPLEMENTED
-int BrewLightPin = D0;
-int BrewButPin = D2;
+//flashLED
+const int BrewLidPin = D0;
 
-int OnOffPin = D1;
+//IMPLEMENTED
+
+//need to check this pin
+const int BrewLightPin = D4;
+const int BrewButPin = D5;
+const int OnOffPin = D1;
+
 //GPIO3 (D9)for On/Off switch for keurig
 // this pin has RXD0
 //Using GPIO16 (D0) for Brewing Light Input
 //Using GPIO6 (D2) for Brewing Button Output
+
+//flashing light state variables
+//based on https://forum.arduino.cc/index.php?topic=101517.0
+int flashCounter = 0;   // counter for the number of button presses
+int flashState = 0;         // current state of the button
+int lastFlashState = 0;     // previous state of the button
+int flashing = 0;
+int notifySend = 0;
+
 
 
 
@@ -154,17 +168,18 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   //setting the pins as input or output
   pinMode(BrewLightPin, INPUT_PULLDOWN_16);
   pinMode(BrewButPin, OUTPUT);
+  pinMode(BrewLidPin, OUTPUT);
 
   pinMode(OnOffPin, OUTPUT);
-  
 
+  
   //set coffee brewing to low so it's not brewing yet
   digitalWrite(BrewButPin, LOW);
 
   //Make sure directionals and power switch are low (inactive) until they are used
   digitalWrite(OnOffPin, HIGH);
 
-
+  digitalWrite(BrewLidPin, HIGH);
   
   delay(1000);
   Serial.begin(115200);
@@ -197,10 +212,17 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   //We simulate a brew button press on the keurig through digitally writing the pin to high and then
   //low with a short delay.
   server.on("/BrewButton", [](){
-    server.send(200, "text/html", page);
-    digitalWrite(BrewButPin, HIGH);
-    delay(1000);
-    digitalWrite(BrewButPin, LOW);
+    if(notifySend == 1){
+      server.send(200, "text/html", page);
+      digitalWrite(BrewButPin, HIGH);
+      delay(1000);
+      digitalWrite(BrewButPin, LOW);
+      notifySend = 0;
+    }
+    else{
+      //Will need to change html or introduce a popup for this statement at a later point
+      Serial.println("Cup isn't in place. Cannot succesfully brew.");  
+    }
   });
 
   Serial.println("On/Off switch URI Creation");
@@ -211,6 +233,12 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     digitalWrite(OnOffPin, LOW);
     delay(1000);
     digitalWrite(OnOffPin, HIGH);
+    
+    delay(1000);
+
+    digitalWrite(BrewLidPin, LOW);
+    delay(1000);
+    digitalWrite(BrewLidPin, HIGH);
   });
   server.begin();
   Serial.println("Web server started!");
@@ -224,5 +252,47 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
 void loop(void) {
   // put your main code here, to run repeatedly:
     server.handleClient ();
+
+
+    //Potentially need to move this
+    readStatus();
+
+    if(flashing == 1 && notifySend == 0) {
+      Serial.println("flashed, send notification");
+      notifySend = 1;
+    }
+
+    //if (led full) {     //<----------------- Help?
+    //  notifySend = 0;
+    //}
+
+}
+
+
+void readStatus() {
+  // read the pushbutton input pin:
+  flashState = digitalRead(BrewLightPin);
+ 
+  // compare the buttonState to its previous state
+  if (flashState != lastFlashState) {
+    // if the state has changed, increment the counter
+    if (flashState == HIGH) {
+      flashing = 1;
+      // if the current state is HIGH then the button
+      // went from off to on:
+      flashCounter++;
+      Serial.println("on");
+      Serial.print("Flashes: ");
+      Serial.println(flashCounter);
+    }
+    else {
+      // if the current state is LOW then the button
+      // went from on to off:
+      Serial.println("off");
+    }
+  }
+  // save the current state as the last state,
+  //for next time through the loop
+  lastFlashState = flashState;
 }
 

@@ -15,7 +15,7 @@ const int BrewLidPin = D0;
 //IMPLEMENTED
 
 //need to check this pin
-const int BrewLightPin = D4;
+const int BrewLightPin = D3;
 const int BrewButPin = D5;
 const int OnOffPin = D1;
 
@@ -231,18 +231,18 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   server.on("/OnOff", [](){
     server.send(200, "text/html", page);
     digitalWrite(OnOffPin, LOW);
-    delay(3000);
+    delay(500);
     digitalWrite(OnOffPin, HIGH);
     
-    delay(3000);
+    delay(500);
     digitalWrite(BrewLidPin, LOW);
-    delay(3000);
+    delay(500);
     digitalWrite(BrewLidPin, HIGH);
 
     
-    delay(3000);
+    delay(500);
     digitalWrite(BrewLidPin, LOW);
-    delay(3000);
+    delay(500);
     digitalWrite(BrewLidPin, HIGH);
   });
   server.begin();

@@ -82,3 +82,15 @@ Website showing on read index.txt (uploaded to SPIFFs). Corresponding pins found
   * He can connect the keurig to the NodeMCU at any point
 * Even
   * Setting up alarm clock/timer to be used for brewing
+
+  9/22/18
+Zach
+*  to simulate the lid switch, a transistor was swapped out for an octo-coupler, for stability(?).
+*  May potentially need some isolation circuitry. light pin should be an input, however it seems to be supplying power to the brew light button.
+Will
+*  Reduced delay times
+
+If you remove D4 (the brew light pin), then it works correctly as the brew light is off (power is off by default)
+However, if D4 is connected on startup, the brew light is already on (suggesting power being supplied?) which results in unsuccessful boot order
+D4 is leading to difficulties with the site. Potentially may remove light pin in future iteration
+

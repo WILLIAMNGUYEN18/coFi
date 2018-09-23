@@ -94,3 +94,6 @@ If you remove D4 (the brew light pin), then it works correctly as the brew light
 However, if D4 is connected on startup, the brew light is already on (suggesting power being supplied?) which results in unsuccessful boot order
 D4 is leading to difficulties with the site. Potentially may remove light pin in future iteration
 
+Found out that the power button was not plugged in. Also the keurig turns on automatically once lid is cycled.
+On/Off now functioning. specific case for power already being on/off (based off on/off being pressed rather than actual state currently)
+

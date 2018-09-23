@@ -226,8 +226,9 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
   //simulating button press through digital signal writing.
   server.on("/OnOff", [](){
     server.send(200, "text/html", page);
+    /*
     digitalWrite(OnOffPin, LOW);
-    delay(500);
+    delay(1000);
     digitalWrite(OnOffPin, HIGH);
     
     delay(500);
@@ -240,8 +241,9 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     digitalWrite(BrewLidPin, LOW);
     delay(500);
     digitalWrite(BrewLidPin, HIGH);
-    /*
-    delay(1000);  
+    
+    delay(1000);
+    */  
     if(power == true){
       digitalWrite(OnOffPin, LOW);
       delay(1000);
@@ -265,7 +267,7 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     digitalWrite(BrewLidPin, HIGH);
     power = true;
     }
-    */
+    
     
   });
   server.begin();

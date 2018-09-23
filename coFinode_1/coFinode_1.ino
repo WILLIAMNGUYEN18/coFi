@@ -31,11 +31,7 @@ int flashState = 0;         // current state of the button
 int lastFlashState = 0;     // previous state of the button
 int flashing = 0;
 int notifySend = 0;
-
-
-
-
-
+bool power = false;
 String page  = "";
 
 /*
@@ -244,6 +240,33 @@ bool handleFileRead(String path) { // send the right file to the client (if it e
     digitalWrite(BrewLidPin, LOW);
     delay(500);
     digitalWrite(BrewLidPin, HIGH);
+    /*
+    delay(1000);  
+    if(power == true){
+      digitalWrite(OnOffPin, LOW);
+      delay(1000);
+      digitalWrite(OnOffPin, HIGH);
+      power = false;
+    }
+    else{
+    digitalWrite(OnOffPin, LOW);
+    delay(500);
+    digitalWrite(OnOffPin, HIGH);
+    
+    delay(500);
+    digitalWrite(BrewLidPin, LOW);
+    delay(500);
+    digitalWrite(BrewLidPin, HIGH);
+
+    
+    delay(500);
+    digitalWrite(BrewLidPin, LOW);
+    delay(500);
+    digitalWrite(BrewLidPin, HIGH);
+    power = true;
+    }
+    */
+    
   });
   server.begin();
   Serial.println("Web server started!");
